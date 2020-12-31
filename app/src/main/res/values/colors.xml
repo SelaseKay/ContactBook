@@ -7,4 +7,5 @@
     <item name="white" type="color">#FFFFFF</item>
     <item name="label_color" type="color">#CFCDCD</item>
     <item name="phone_color" type="color">#2074DA</item>
+    <item name="search_view_color" type="color">#3DA2F3</item>
 </resources>

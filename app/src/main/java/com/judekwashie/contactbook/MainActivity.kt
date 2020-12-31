@@ -9,7 +9,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val fragmentManager = supportFragmentManager
-        fragmentManager.beginTransaction().add(R.id.fragment_container, ContactDetailFragment())
+        fragmentManager.beginTransaction().add(R.id.fragment_container, ContactListFragment())
             .commit()
 
     }
