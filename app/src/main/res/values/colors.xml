@@ -8,4 +8,28 @@
     <item name="label_color" type="color">#CFCDCD</item>
     <item name="phone_color" type="color">#2074DA</item>
     <item name="search_view_color" type="color">#3DA2F3</item>
+    <item name="full_name_color" type="color">#4C4C4C</item>
+    <item name="divider_color" type="color">#EFEFEF</item>
+    <item name="edit_text_color" type="color">#5E5E5E</item>
+    <item name="edit_text_hint_color" type="color">#AAAAAA</item>
+    <item name="custom_field_text_color" type="color">#4D8DDC</item>
+
+    <item name="random_1" type="color">#921ff0</item>
+    <item name="random_2" type="color">#edf524</item>
+    <item name="random_3" type="color">#08f32c</item>
+    <item name="random_4" type="color">#c70f35</item>
+    <item name="random_5" type="color">#907adc</item>
+    <item name="random_6" type="color">#d1c5a6</item>
+    <item name="random_7" type="color">#15cee8</item>
+
+    <integer-array name="view_colors">
+        <item>@color/random_1</item>
+        <item>@color/random_2</item>
+        <item>@color/random_3</item>
+        <item>@color/random_4</item>
+        <item>@color/random_5</item>
+        <item>@color/random_6</item>
+        <item>@color/random_7</item>
+    </integer-array>
+
 </resources>

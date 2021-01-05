@@ -2,6 +2,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:drawable="@drawable/line"
-        android:left="16dp"
-        android:right="16dp" />
+        android:left="24dp"
+        android:right="24dp" />
 </layer-list>

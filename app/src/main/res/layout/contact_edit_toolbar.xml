@@ -3,15 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:theme="@style/AppTheme.AppBarOverlay"
     android:fitsSystemWindows="true">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:id="@+id/contact_list_toolbar"
+        android:id="@+id/contact_edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:showAsAction="always|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:title="Contacts" />
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:navigationIcon="@drawable/ic_close"
+        app:menu="@menu/menu_save_delete"
+        app:title="Edit Contact" />
 
 </com.google.android.material.appbar.AppBarLayout>
