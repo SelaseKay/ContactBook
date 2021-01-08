@@ -11,13 +11,44 @@
         android:id="@+id/appbar"
         layout="@layout/contact_list_toolbar"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/contacts_recycler_view"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="8dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/contact_item"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contacts_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingTop="8dp"
+            android:visibility="invisible"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/no_contacts_imageView"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_empty_list_icon" />
+
+        <TextView
+            android:id="@+id/no_contacts_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/no_contacts"
+            android:textColor="@color/empty_list_icon_color"
+            app:layout_constraintEnd_toEndOf="@+id/no_contacts_imageView"
+            app:layout_constraintStart_toStartOf="@+id/no_contacts_imageView"
+            app:layout_constraintTop_toBottomOf="@+id/no_contacts_imageView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

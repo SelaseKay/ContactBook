@@ -33,6 +33,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:label="Name"
+                android:visibility="invisible"
                 android:layout_marginTop="24dp"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="@id/guideline_left"/>
@@ -42,6 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:label="Email"
+                android:visibility="invisible"
                 android:layout_marginTop="12dp"
                 app:layout_constraintTop_toBottomOf="@id/full_name_label_text_view"
                 app:layout_constraintStart_toStartOf="@id/guideline_left"/>
@@ -51,6 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:label="Phone number"
+                android:visibility="invisible"
                 android:layout_marginTop="12dp"
                 app:layout_constraintTop_toBottomOf="@id/email_label_text_view"
                 app:layout_constraintStart_toStartOf="@id/guideline_left"/>
@@ -60,6 +63,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/phone_number"
                 app:layout_constraintEnd_toStartOf="@+id/text_sms_image_view"
                 android:background="?attr/selectableItemBackgroundBorderless"
@@ -72,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="@id/phone_number"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:background="?attr/selectableItemBackgroundBorderless"

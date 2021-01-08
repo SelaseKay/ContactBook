@@ -1,7 +1,7 @@
 package com.judekwashie.contactbook.ui.contactdetail
 
+import android.opengl.Visibility
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
@@ -25,18 +25,20 @@ class ContactDetailFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val args: ContactEditFragmentArgs by navArgs()
-    private var contactId by Delegates.notNull<Long>()
+    private var _contactId by Delegates.notNull<Long>()
 
     private val contactDetailViewModel: ContactDetailViewModel by activityViewModels()
 
     private lateinit var toolbar: Toolbar
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
 
+    private lateinit var fullName: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        contactId = args.contactId
+        _contactId = args.contactId
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -59,8 +61,9 @@ class ContactDetailFragment : Fragment() {
         toolbar = view.findViewById(R.id.contact_detail_toolbar)
         collapsingToolbarLayout = view.findViewById(R.id.collapsing_layout)
 
-        contactDetailViewModel.getContact(contactId).observe(viewLifecycleOwner, Observer {
+        contactDetailViewModel.getContact(_contactId).observe(viewLifecycleOwner, Observer {
             it?.let {
+                validateContactProperties(it)
                 initializeViews(it)
                 (activity as AppCompatActivity).setSupportActionBar(toolbar)
             }
@@ -70,27 +73,57 @@ class ContactDetailFragment : Fragment() {
 
     }
 
+    private fun validateContactProperties(contact: Contact) {
+
+        if (contact.firstName.trim().isEmpty() && contact.lastName.trim().isEmpty()) {
+            fullName = "(No Name)"
+        }
+        if (contact.firstName.trim().isNotEmpty() && contact.lastName.trim().isEmpty()) {
+            fullName = contact.firstName.trim()
+        }
+        if (contact.firstName.trim().isEmpty() && contact.lastName.trim().isNotEmpty()) {
+            fullName = contact.lastName.trim()
+        }
+        if (contact.firstName.trim().isNotEmpty() && contact.lastName.trim().isNotEmpty()) {
+            fullName = contact.firstName.trim() + " " + contact.lastName.trim()
+        }
+    }
+
     private fun initializeViews(contact: Contact) {
         binding.fullNameLabelTextView.description.text =
-            "${contact.firstName.trim()} ${contact.lastName.trim()}"
-        binding.emailLabelTextView.description.text = "${contact.email.trim()}"
-        binding.phoneNumber.description.text = "${contact.phoneNumbers.get(0)}"
-        toolbar.title = "${contact.firstName}"
+            fullName
+        binding.emailLabelTextView.description.text = contact.email.trim()
+        binding.phoneNumber.apply {
+            description.text = contact.phoneNumbers[0]
+            if (this.visibility == View.VISIBLE) {
+                binding.phoneImageView.visibility = View.VISIBLE
+                binding.textSmsImageView.visibility = View.VISIBLE
+            } else {
+                binding.phoneImageView.visibility = View.INVISIBLE
+                binding.textSmsImageView.visibility = View.INVISIBLE
+            }
+        }
+        toolbar.title = fullName
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.edit_item -> {
-                Toast.makeText(this.requireContext(), "edit clicked", Toast.LENGTH_LONG).show()
                 val action =
                     ContactDetailFragmentDirections.actionContactDetailFragmentToContactEditFragment(
-                        contactId
+                        _contactId
                     )
                 findNavController().navigate(action)
                 true
             }
             R.id.add_photo_item -> {
                 Toast.makeText(this.requireContext(), "add photo clicked", Toast.LENGTH_LONG).show()
+                true
+            }
+            R.id.delete_item -> {
+                val contact = Contact().apply { contactId = _contactId }
+                contactDetailViewModel.deleteContact(contact)
+                findNavController().navigate(R.id.action_contactDetailFragment_to_contactListFragment)
                 true
             }
             else -> {

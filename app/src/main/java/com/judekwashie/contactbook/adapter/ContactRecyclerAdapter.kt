@@ -43,9 +43,23 @@ constructor(private val recyclerItemClickListener: RecyclerItemClickListener) :
 
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = getItem(position)
-        holder.itemView.full_name.text = "${contact.firstName} ${contact.lastName}"
+        if (contact.firstName.trim().isEmpty() && contact.lastName.trim().isEmpty()){
+            holder.itemView.full_name.text = "(No Name)"
+            holder.itemView.first_name_initial.text = "#"
+        }
+        if (contact.firstName.trim().isNotEmpty() && contact.lastName.trim().isEmpty()){
+            holder.itemView.full_name.text = contact.firstName.trim()
+            holder.itemView.first_name_initial.text = contact.firstName[0].toString()
+        }
+        if (contact.firstName.trim().isEmpty() && contact.lastName.trim().isNotEmpty()){
+            holder.itemView.full_name.text = contact.lastName.trim()
+            holder.itemView.first_name_initial.text = contact.lastName[0].toString()
+        }
+        if (contact.firstName.trim().isNotEmpty() && contact.lastName.trim().isNotEmpty()){
+            holder.itemView.full_name.text = contact.firstName.trim() + " " + contact.lastName.trim()
+            holder.itemView.first_name_initial.text = contact.firstName[0].toString()
+        }
         holder.itemView.contact_image_view.setBackgroundColor(contact.color!!)
-        holder.itemView.first_name_initial.text = contact.firstName[0].toString()
     }
 
     override fun getFilter(): Filter {

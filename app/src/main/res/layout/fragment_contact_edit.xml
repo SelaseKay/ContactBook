@@ -95,6 +95,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/email"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/edit_text_color"/>
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -117,6 +118,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/phone_number"
+                    android:inputType="phone"
                     android:textColor="@color/edit_text_color"/>
 
             </com.google.android.material.textfield.TextInputLayout>

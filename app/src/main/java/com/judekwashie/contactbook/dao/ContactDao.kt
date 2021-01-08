@@ -16,7 +16,7 @@ interface ContactDao {
     @Update
     suspend fun updateContact(contact: Contact)
 
-    @Query("SELECT * FROM contact_table ORDER BY lastName ASC")
+    @Query("SELECT * FROM contact_table ORDER BY firstName ASC")
     fun getAllContacts(): LiveData<MutableList<Contact>>
 
     @Query("SELECT * FROM contact_table WHERE :contactId = contactId")

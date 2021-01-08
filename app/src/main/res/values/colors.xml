@@ -13,6 +13,7 @@
     <item name="edit_text_color" type="color">#5E5E5E</item>
     <item name="edit_text_hint_color" type="color">#AAAAAA</item>
     <item name="custom_field_text_color" type="color">#4D8DDC</item>
+    <item name="empty_list_icon_color" type="color">#EFF0F3</item>
 
     <item name="random_1" type="color">#921ff0</item>
     <item name="random_2" type="color">#edf524</item>

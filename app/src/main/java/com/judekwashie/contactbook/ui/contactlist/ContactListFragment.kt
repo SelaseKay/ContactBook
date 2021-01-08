@@ -1,7 +1,7 @@
 package com.judekwashie.contactbook.ui.contactlist
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.annotation.DrawableRes
@@ -103,9 +103,19 @@ class ContactListFragment : Fragment(), MenuItem.OnActionExpandListener, Recycle
         }
 
         contactListViewModel.getAllContacts().observe(viewLifecycleOwner, Observer {
-            contactRecyclerAdapter.apply {
-                submitList(it)
-                contactListCopy = ArrayList(it)
+            if(it.isEmpty()){
+                binding.noContactsImageView.visibility = View.VISIBLE
+                binding.noContactsTextView.visibility = View.VISIBLE
+                binding.contactsRecyclerView.visibility = View.GONE
+            }
+            else{
+                binding.noContactsImageView.visibility = View.GONE
+                binding.noContactsTextView.visibility = View.GONE
+                binding.contactsRecyclerView.visibility = View.VISIBLE
+                contactRecyclerAdapter.apply {
+                    submitList(it)
+                    contactListCopy = ArrayList(it)
+                }
             }
         })
 
@@ -122,7 +132,6 @@ class ContactListFragment : Fragment(), MenuItem.OnActionExpandListener, Recycle
                 true
             }
             else -> {
-                Toast.makeText(requireContext(), "noitemSelected", Toast.LENGTH_LONG).show()
                 return super.onOptionsItemSelected(item)
             }
         }
@@ -147,7 +156,7 @@ class ContactListFragment : Fragment(), MenuItem.OnActionExpandListener, Recycle
     }
 
 
-    fun RecyclerView.setDivider(@DrawableRes drawableRes: Int) {
+    private fun RecyclerView.setDivider(@DrawableRes drawableRes: Int) {
         val divider = DividerItemDecoration(
             this.context,
             DividerItemDecoration.VERTICAL

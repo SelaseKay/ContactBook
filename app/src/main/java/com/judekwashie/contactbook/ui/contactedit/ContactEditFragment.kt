@@ -3,7 +3,6 @@ package com.judekwashie.contactbook.ui.contactedit
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
@@ -17,9 +16,7 @@ import com.judekwashie.contactbook.databinding.FragmentContactEditBinding
 import com.judekwashie.contactbook.utils.getRandomColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class ContactEditFragment : Fragment() {
@@ -31,6 +28,8 @@ class ContactEditFragment : Fragment() {
 
     private lateinit var toolbar: Toolbar
     private var _contactId by Delegates.notNull<Long>()
+
+    private var onContactUpdateCallback: (() -> Contact)? = null
 
     private val contactEditViewModel: ContactEditViewModel by activityViewModels()
 
@@ -66,14 +65,26 @@ class ContactEditFragment : Fragment() {
             it?.let {
                 toolbar.title = getString(R.string.edit_contact)
                 setViewValues(it)
+                setOnContactUpdateCallback {
+                    it.apply {
+                        firstName = binding.firstNameTextLayout.editText?.text.toString()
+                        lastName = binding.lastNameTextLayout.editText?.text.toString()
+                        email = binding.emailTextLayout.editText?.text.toString()
+                        phoneNumbers.add(0, binding.phoneNumberTextLayout.editText?.text.toString())
+                    }
+                }
             } ?: kotlin.run { toolbar.title = getString(R.string.create_contact) }
         })
+
+        toolbar.setNavigationOnClickListener {
+            navigateToListFragment()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.delete_item -> {
-                contactEditViewModel.deleteContact(getContact().apply {
+                contactEditViewModel.deleteContact(getNewContact().apply {
                     contactId = _contactId
                 })
                 navigateToListFragment()
@@ -82,13 +93,12 @@ class ContactEditFragment : Fragment() {
             R.id.save_item -> {
                 CoroutineScope(Dispatchers.IO).launch {
                     if (_contactId == -1L) {
-                        val contact = getContact()
+                        val contact = getNewContact()
                         _contactId = contactEditViewModel.insertContact(contact)
                         navigateToDetailFragment()
                     } else {
-                        contactEditViewModel.updateContact(getContact().apply {
-                            contactId = _contactId
-                        })
+                        val contact = onContactUpdateCallback?.let { it() }!!
+                        contactEditViewModel.updateContact(contact)
                         navigateToDetailFragment()
                     }
                 }
@@ -100,14 +110,14 @@ class ContactEditFragment : Fragment() {
         }
     }
 
-    private fun setViewValues(contact: Contact){
+    private fun setViewValues(contact: Contact) {
         binding.firstNameTextLayout.editText?.setText(contact.firstName)
         binding.lastNameTextLayout.editText?.setText(contact.lastName)
         binding.emailTextLayout.editText?.setText(contact.email)
-        binding.phoneNumberTextLayout.editText?.setText(contact.phoneNumbers.get(0))
+        binding.phoneNumberTextLayout.editText?.setText(contact.phoneNumbers[0])
     }
 
-    private fun getContact(): Contact {
+    private fun getNewContact(): Contact {
         val contact = Contact()
         contact.apply {
             firstName = binding.firstNameTextLayout.editText?.text.toString()
@@ -119,14 +129,18 @@ class ContactEditFragment : Fragment() {
         return contact
     }
 
+    private fun setOnContactUpdateCallback(function: (() -> Contact)?) {
+        this.onContactUpdateCallback = function
+    }
+
     private fun navigateToDetailFragment() {
         val action = ContactEditFragmentDirections.actionContactEditFragmentToContactDetailFragment(
-           _contactId
+            _contactId
         )
         findNavController().navigate(action)
     }
 
-    private fun navigateToListFragment(){
+    private fun navigateToListFragment() {
         findNavController().navigate(R.id.action_contactEditFragment_to_contactListFragment)
     }
 }

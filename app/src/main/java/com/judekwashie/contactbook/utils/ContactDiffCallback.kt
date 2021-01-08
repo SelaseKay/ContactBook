@@ -9,6 +9,8 @@ class ContactDiffCallback : DiffUtil.ItemCallback<Contact>() {
     }
 
     override fun areContentsTheSame(oldItem: Contact, newItem: Contact): Boolean {
-        return oldItem.contactId == newItem.contactId
+        return oldItem.contactId == newItem.contactId && oldItem.firstName == newItem.firstName && oldItem.lastName == newItem.lastName
+                && oldItem.phoneNumbers == newItem.phoneNumbers && oldItem.email == newItem.email
+                && oldItem.color == newItem.color && oldItem.image == newItem.image
     }
 }
